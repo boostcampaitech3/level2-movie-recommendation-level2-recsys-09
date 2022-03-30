@@ -4,15 +4,11 @@ RecBole implementation for boostcamp MovieRec project.
 
 ## Installation
 
----
-
 ```bash
 pip install recbole
 ```
 
 ## Getting Started
-
----
 
 ### train.py
 
@@ -29,8 +25,6 @@ output: submission.csv
 Make Atomic file for RecBole
 
 ## Acknowledgments
-
----
 
 [RecBole](https://recbole.io/)
 
