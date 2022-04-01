@@ -6,36 +6,18 @@ from recbole.data import create_dataset, data_preparation
 from recbole.model.general_recommender import BPR
 from recbole.model.sequential_recommender import GRU4Rec, LightSANs
 from recbole.trainer import Trainer
-from recbole.utils import init_seed, init_logger
+from recbole.utils import init_seed, init_logger, get_model
 
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
+    parser.add_argument('--model', '-m', type=str, default='BPR', help='name of models')
+    parser.add_argument('--dataset', '-d', type=str, default='boostcamp', help='name of datasets')
+    parser.add_argument('--config_files', type=str, default=None, help='config files')
 
-    parameter_dict = {
-        "data_path": "./data/",
-        "USER_ID_FIELD": "user_id",
-        "ITEM_ID_FIELD": "item_id",
-        "TIME_FIELD": "timestamp",
-        "user_inter_num_interval": "[0,inf)",
-        "item_inter_num_interval": "[0,inf)",
-        "load_col": {"inter": ["user_id", "item_id", "timestamp"]},
-        "neg_sampling": {"uniform": 1},
-        "loss_type": "BPR",
-        "epochs": 50,
-        "train_batch_size": 256,
-        "eval_batch_size": 4096,
-        "MAX_ITEM_LIST_LENGTH": 50,
-        "k_interests": 5, # for LightSANs (MAX_ITEM_LIST_LENGTH * 0.1)
-        "eval_args": {
-            "split": {"RS": [9, 1, 0]},
-            "group_by": "user",
-            "order": "TO",
-            "mode": "full",
-        }
-    }
+    args = parser.parse_args()
 
-    config = Config(model="LightSANs", dataset="boostcamp", config_dict=parameter_dict)
+    config = Config(model=args.model, dataset=args.dataset, config_file_list=[args.config_files])
 
     # init random seed
     init_seed(config["seed"], config["reproducibility"])
@@ -55,7 +37,8 @@ if __name__ == "__main__":
     train_data, valid_data, test_data = data_preparation(config, dataset)
 
     # model loading and initialization
-    model = LightSANs(config, train_data.dataset).to(config["device"])
+    imported_model = get_model(args.model)
+    model = imported_model(config, train_data.dataset).to(config["device"])
     logger.info(model)
 
     # trainer loading and initialization
