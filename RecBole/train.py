@@ -1,10 +1,9 @@
 import argparse
+import os
 from recbole.config import Config
 from logging import getLogger
 from recbole.config import Config
 from recbole.data import create_dataset, data_preparation
-from recbole.model.general_recommender import BPR
-from recbole.model.sequential_recommender import GRU4Rec, LightSANs
 from recbole.trainer import Trainer
 from recbole.utils import init_seed, init_logger, get_model
 
@@ -16,6 +15,11 @@ if __name__ == "__main__":
     parser.add_argument('--config_files', type=str, default=None, help='config files')
 
     args = parser.parse_args()
+
+    if args.config_files.endswith('.yaml'):
+        args.config_files = os.path.join('./config', args.config_files)
+    else:
+        args.config_files = os.path.join('./config', args.config_files + ".yaml")
 
     config = Config(model=args.model, dataset=args.dataset, config_file_list=[args.config_files])
 
