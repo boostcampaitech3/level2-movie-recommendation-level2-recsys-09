@@ -12,5 +12,5 @@ load_col:
 eval_args:
     group_by: user
     order: RO
-    split: {'LS': 'valid_only'}
+    split: {'LS': 'test_only'}
     mode: full

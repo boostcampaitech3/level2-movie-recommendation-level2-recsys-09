@@ -1,0 +1,49 @@
+data_path: data
+gpu_id: 0
+use_gpu: True
+seed: 2020
+state: 'INFO'
+encoding: 'utf-8'
+reproducibility: True
+checkpoint_dir: 'saved/'
+show_progress: True
+save_dataset: False
+dataset_save_path: None
+save_dataloaders: False
+dataloaders_save_path: None
+log_wandb: False
+wandb_project: 'recbole'
+
+
+USER_ID_FIELD: user_id
+ITEM_ID_FIELD: item_id
+TIME_FIELD: timestamp
+latent_dimendion: 128
+mlp_hidden_size: [600]
+dropout_prob: 0.5
+anneal_cap: 0.2
+total_anneal_steps: 200000
+
+
+
+load_col: {"inter": ["user_id", "item_id", "timestamp"]}
+neg_sampling: {"uniform": 1}
+mf_embedding_size: 64
+mlp_embedding_size: 64
+mlp_hidden_size: [128, 64]
+
+mf_train: True
+mlp_train: True
+use_pretrain: False
+
+epochs: 100
+train_batch_size: 64
+eval_batch_size: 4096
+eval_args:
+    split: {"RS": [0.9, 0.05, 0.05]}
+    group_by: user
+    order: RO
+    mode: full
+    repeatable: False
+
+valid_metric: Recall@10

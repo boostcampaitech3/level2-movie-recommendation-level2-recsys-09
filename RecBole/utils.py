@@ -6,6 +6,7 @@ from recbole.utils import init_seed, init_logger
 from logging import getLogger
 from recbole.data import create_dataset, data_preparation
 import torch
+from recbole.utils.case_study import full_sort_scores, full_sort_topk
 
 
 def add_last_item(old_interaction, last_item_id, max_len=50):
@@ -50,7 +51,20 @@ def predict_for_all_item(external_user_id, dataset, test_data, model, config):
     return torch.topk(new_scores, 10)
 
 
-def generate_predict(
+def generate_predict(dataset, test_data, model, config, user_data_file="./user_data.csv"):
+    user_data = pd.read_csv(user_data_file, dtype=str)
+    users = user_data["user"].unique()
+
+    predict = []
+
+    for user in tqdm(users):
+        uid_series = dataset.token2id(dataset.uid_field, [user])
+        _, topk_iid_list = full_sort_topk(uid_series, model, test_data, k=10, device=config['device'])
+        external_item_list = dataset.id2token(dataset.iid_field, topk_iid_list.cpu())[0]
+        predict.append(list(external_item_list))
+    return predict
+
+def generate_predict_seq(
     dataset, test_data, model, config, user_data_file="./user_data.csv"
 ):
     """
@@ -66,7 +80,6 @@ def generate_predict(
         external_item_list = dataset.id2token(dataset.iid_field, temp.indices.cpu())[0]
         predict.append(list(external_item_list))
     return predict
-
 
 def gererate_submission_from_prediction(
     prediction, user_data_file="./user_data.csv", output_dir="./submission.csv"
