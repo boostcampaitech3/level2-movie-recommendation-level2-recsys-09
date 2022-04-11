@@ -1,0 +1,54 @@
+gpu_id: 0
+learning_rate: 0.001
+epochs: 20
+# training_batch_size: 1024
+# train_batch_size : 1024
+eval_batch_size": 4096
+data_path: './data/'
+embedding_size: 10
+seq_separator: '@'
+USER_ID_FIELD: 'user_id'
+ITEM_ID_FIELD: 'item_id'
+TIME_FIELD: 'timestamp'
+RATING_FIELD: ~
+dropout_prob: 0.2
+eval_step: 1
+load_col:
+    inter: ['user_id', 'item_id','timestamp']
+    user: ['user_id', 'last_year']
+    item: ['item_id', 'year','director','writer','genre0',
+ 'genre1',
+ 'genre2',
+ 'genre3',
+ 'genre4',
+ 'genre5',
+ 'genre6',
+ 'genre7',
+ 'genre8',
+ 'genre9',
+ 'genre10',
+ 'genre11',
+ 'genre12',
+ 'genre13',
+ 'genre14',
+ 'genre15',
+ 'genre16',
+ 'genre17',
+ 'genre18',
+ 'genre19','pop']
+unused_col:
+    inter: ['timestamp']
+eval_args:
+    group_by: user
+    order: TO
+    # split: {"RS": [8, 1, 1]}
+    split: {"LS": 'valid_only'}
+    # split: {"LS": 'test_only'}
+    mode: full
+MAX_ITEM_LIST_LENGTH: 200
+neg_sampling: 
+    uniform: 3
+    dynamic: 2
+topk: 10
+metrics: ['Recall', 'MRR', 'NDCG', 'Hit', 'Precision']
+valid_metric: Recall@10

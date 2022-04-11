@@ -1,0 +1,63 @@
+gpu_id: 0
+learning_rate: 0.001
+epochs: 30
+training_batch_size: 1024
+eval_batch_size": 4096
+data_path: './data/'
+embedding_size: 10
+seq_separator: '@'
+USER_ID_FIELD: 'user_id'
+ITEM_ID_FIELD: 'item_id'
+TIME_FIELD: 'timestamp'
+RATING_FIELD: ~
+dropout_prob: 0.2
+eval_step: 1
+load_col:
+    inter: ['user_id', 'item_id','timestamp']
+    user: ['user_id', 'popularity','last_year']
+    item: ['item_id', 'year','genre_Action','genre_Adventure','genre_Animation','genre_Children','genre_Comedy','genre_Crime',
+    'genre_Documentary','genre_Drama','genre_Fantasy','genre_Film-Noir','genre_Horror','genre_Musical','genre_Mystery',
+    'genre_Romance','genre_Sci-Fi','genre_Thriller','genre_War','genre_Western','director','writer','title1',
+ 'title2',
+ 'title3',
+ 'title4',
+ 'title5',
+ 'title6',
+ 'title7',
+ 'title8',
+ 'title9',
+ 'title10',
+ 'title11',
+ 'title12',
+ 'title13',
+ 'title14',
+ 'title15',
+ 'title16',
+ 'title17',
+ 'title18',
+ 'title19',
+ 'title20',
+ 'title21',
+ 'title22',
+ 'title23',
+ 'title24',
+ 'title25',
+ 'title26',
+ 'title27',
+ 'title28',
+ 'title29',
+ 'title30']
+unused_col:
+    inter: ['timestamp']
+eval_args:
+    group_by: user
+    order: TO
+    split: {"RS": [8, 1, 1]}
+    mode: full
+MAX_ITEM_LIST_LENGTH: 50
+neg_sampling:
+    uniform: 1
+    dynamic: 2
+topk: 10
+metrics: ['Recall', 'MRR', 'NDCG', 'Hit', 'Precision']
+valid_metric: Recall@10
