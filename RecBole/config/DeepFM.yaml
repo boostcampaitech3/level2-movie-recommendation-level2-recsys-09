@@ -1,0 +1,38 @@
+gpu_id: 0
+learning_rate: 0.001
+epochs: 100
+train_batch_size: 4096
+eval_batch_size": 25600
+data_path: './data/'
+embedding_size: 256
+seq_separator: '@'
+USER_ID_FIELD: 'user_id'
+ITEM_ID_FIELD: 'item_id'
+TIME_FIELD: 'timestamp'
+RATING_FIELD: ~
+dropout_prob: 0.5
+eval_step: 1
+load_col:
+    inter: ['user_id', 'item_id', 'timestamp']
+    user: ['user_id', 'popularity']
+    item: ['item_id', 'title', 'year', 'genre', 'director', 'writer']
+
+unused_col:
+    inter: ['timestamp']
+
+eval_args:
+    group_by: user
+    order: RO
+    split: {"RS": [8, 1, 1]}
+    mode: full
+
+MAX_ITEM_LIST_LENGTH: 50
+
+neg_sampling:
+    uniform: 1
+    dynamic: 2
+
+topk: 10
+
+metrics: ['Recall', 'MRR', 'NDCG', 'Hit', 'Precision']
+valid_metric: Recall@10
