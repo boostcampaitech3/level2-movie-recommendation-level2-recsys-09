@@ -1,3 +1,7 @@
+Train.py : argsparser, save 추가
+Save.txt : 기록 저장
+test1.py : 실행파일
+
 # RecBole
 
 RecBole implementation for boostcamp MovieRec project.
