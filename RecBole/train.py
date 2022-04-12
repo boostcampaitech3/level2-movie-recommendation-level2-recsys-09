@@ -4,7 +4,7 @@ from recbole.config import Config
 from logging import getLogger
 from recbole.config import Config
 from recbole.data import create_dataset, data_preparation
-from recbole.trainer import Trainer
+from recbole.trainer import Trainer, RecVAETrainer, PretrainTrainer, KGATTrainer, RaCTTrainer
 from recbole.utils import init_seed, init_logger, get_model
 
 
@@ -13,7 +13,10 @@ if __name__ == "__main__":
     parser.add_argument('--model', '-m', type=str, default='BPR', help='name of models')
     parser.add_argument('--dataset', '-d', type=str, default='boostcamp', help='name of datasets')
     parser.add_argument('--config_files', type=str, default=None, help='config files')
-
+    parser.add_argument('--lambda2', type=int, default=None)
+    parser.add_argument('--alpha', type=float, default=None)
+    parser.add_argument('--rho', type=int, default=None)
+    
     args = parser.parse_args()
 
     if args.config_files.endswith('.yaml'):
@@ -50,7 +53,11 @@ if __name__ == "__main__":
 
     # model training
     best_valid_score, best_valid_result = trainer.fit(train_data, valid_data)
-
+    
+    f = open("save.txt", 'a')
+    note = "lambda2 : " + str(args.lambda2) + " alpha : " + str(args.alpha) + " rho : " + str(args.rho) + " score : " + str(best_valid_score) 
+    f.write('\n' + note + '\n')
+    f.close()
     # model evaluation
     # test_result = trainer.evaluate(test_data)
     # print(test_result)
