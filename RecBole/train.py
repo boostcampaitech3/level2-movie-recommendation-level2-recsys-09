@@ -18,14 +18,18 @@ if __name__ == "__main__":
     parser.add_argument('--rho', type=int, default=None)
     
     args = parser.parse_args()
-
+    
     if args.config_files.endswith('.yaml'):
         args.config_files = os.path.join('./config', args.config_files)
     else:
         args.config_files = os.path.join('./config', args.config_files + ".yaml")
-
+    
     config = Config(model=args.model, dataset=args.dataset, config_file_list=[args.config_files])
-
+    
+    config['lambda2'] = args.lambda2
+    config['alpha'] = args.alpha
+    config['rho'] = args.rho
+    
     # init random seed
     init_seed(config["seed"], config["reproducibility"])
 
