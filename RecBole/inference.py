@@ -35,8 +35,8 @@ if __name__ == "__main__":
     file_list = os.listdir(BASE_DIR)
 
     if len(file_list) > 1:
-        ass = True
-        while ass:
+        assignment = True
+        while assignment:
             print('Select "number" you want to do')
             for i in range(len(file_list)):
                 print(f'[{i}] : {file_list[i]}')
@@ -45,7 +45,7 @@ if __name__ == "__main__":
             try:
                 number = int(number)
                 FILE = file_list[number]
-                ass= False
+                assignment= False
             except:
                 pass
     elif len(file_list) == 0:
